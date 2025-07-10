@@ -22,6 +22,8 @@ public class Member {
     @Column(unique = true, nullable = false)
     private String email;
 
+    private String password;
+
     @Enumerated(EnumType.STRING) // string으로 하지 않으면 id값 숫자로 그대로 들어가서 String을 통해 enum값 그대로 들어감.
     @Builder.Default
     private Role role = Role.USER;
