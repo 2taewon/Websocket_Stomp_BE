@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
     private final MemberService memberService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> memberCreate(@RequestBody MemberSaveReqDto dto) {
         Member member = memberService.create(dto);
         return new ResponseEntity<>(member.getId(), HttpStatus.CREATED);
