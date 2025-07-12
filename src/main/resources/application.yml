@@ -6,13 +6,19 @@ spring:
     password: ${dbpassword}
 
 
-    # JPA & Hibernate ??
-    jpa:
+  # JPA & Hibernate ??
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
       hibernate:
-        ddl-auto: create
-      properties:
-        hibernate:
-          show_sql: true # ???? SQL ??? ??? ?????.
-          format_sql: true # SQL ??? ?? ?? ??????.
-          default_batch_fetch_size: 100 # N+1 ?? ??? ?? ??
-      database-platform: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true # ???? SQL ??? ??? ?????.
+        format_sql: true # SQL ??? ?? ?? ??????.
+        default_batch_fetch_size: 100 # N+1 ?? ??? ?? ??
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+
+jwt:
+  # myChatServerAccessTokenmyChatServerAccessTokenmyChatServerAccessToken
+  secretKey: 'bXlDaGF0U2VydmVyQWNjZXNzVG9rZW5teUNoYXRTZXJ2ZXJBY2Nlc3NUb2tlbm15Q2hhdFNlcnZlckFjY2Vzc1Rva2Vu'
+  expiration: 3000 # 3000분
