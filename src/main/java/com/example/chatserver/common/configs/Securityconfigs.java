@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -27,7 +29,7 @@ public class Securityconfigs {
                 .csrf(AbstractHttpConfigurer::disable) // csrf 비활성화
                 .httpBasic(AbstractHttpConfigurer::disable) // HTTP Basic 비활성화
                 //특정 url 패턴에 대해서는 Authentication 객체 요구하지 않는다.(인증처리 제외)
-                .authorizeHttpRequests(authorizeRequests ->authorizeRequests.requestMatchers("/member/create", "/member/login").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(authorizeRequests ->authorizeRequests.requestMatchers("/member/create", "/member/doLogin").permitAll().anyRequest().authenticated())
                 .sessionManagement(s->s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 방식을 사용하지 않겠다는 의미
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) // 특정 url에 대한 것은 빼고 나머지 url은 토큰을 검증하는데 jwtAuthFilter 클래스에서 검증한다.
                 .build();
@@ -43,5 +45,12 @@ public class Securityconfigs {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); // 모든 url에 패턴에 대해 cors 허용
+        return source;
     }
+
+    @Bean // 싱글톤 객체로 패스워드가 만들어 짐 비밀번호를 암호화 해서 데이터베이스에 집어 넣기 위함
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
 }
