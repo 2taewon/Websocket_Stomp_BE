@@ -4,6 +4,7 @@ import com.example.chatserver.common.configs.Securityconfigs;
 import com.example.chatserver.member.domain.Member;
 import com.example.chatserver.member.dto.request.MemberLoginReqDto;
 import com.example.chatserver.member.dto.request.MemberSaveReqDto;
+import com.example.chatserver.member.dto.response.MemberListResDto;
 import com.example.chatserver.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -12,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Security;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -42,5 +45,18 @@ public class MemberService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
         return member;
+    }
+
+    public List<MemberListResDto> finaAll() {
+        List<Member> members = memberRepository.findAll();
+        List<MemberListResDto> dtos = new ArrayList<>();
+        for(Member member : members){
+            MemberListResDto dto = new MemberListResDto();
+            dto.setId(member.getId());
+            dto.setEmail(member.getEmail());
+            dto.setName(member.getName());
+            dtos.add(dto);
+        }
+        return dtos;
     }
 }
